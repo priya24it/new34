@@ -1,0 +1,25 @@
+import requests
+from requests.auth import HTTPBasicAuth
+
+# Jenkins URL, job name, and API token
+JENKINS_URL = 'http://your-jenkins-url/job/job_name/buildWithParameters'
+JENKINS_USER = 'your-username'
+JENKINS_API_TOKEN = 'your-api-token'
+
+# Key-value pairs to pass as parameters
+params = {
+    'param1': 'value1',
+    'param2': 'value2'
+}
+
+# Send the request to trigger the Jenkins job
+response = requests.post(
+    JENKINS_URL,
+    params=params,
+    auth=HTTPBasicAuth(JENKINS_USER, JENKINS_API_TOKEN)
+)
+
+if response.status_code == 201:
+    print("Pipeline triggered successfully!")
+else:
+    print(f"Failed to trigger pipeline. Status code: {response.status_code}")
