@@ -1,0 +1,38 @@
+import requests
+
+# Replace these with your details
+GITLAB_TOKEN = "your_access_token"
+PROJECT_ID = 123456  # Your GitLab project ID
+PIPELINE_ID = 987654  # ID of the pipeline where the job exists
+
+# Job parameters (key-value pairs)
+parameters = {
+    "PARAM_1": "value1",
+    "PARAM_2": "value2",
+    "ENV": "production",
+}
+
+# GitLab API endpoint to trigger a new pipeline with parameters
+url = f"https://gitlab.com/api/v4/projects/{PROJECT_ID}/pipeline"
+
+# Headers including the authentication token
+headers = {
+    "PRIVATE-TOKEN": GITLAB_TOKEN,
+}
+
+# Payload with the pipeline ref and parameters
+data = {
+    "ref": "main",  # Branch or tag name where the pipeline should run
+    "variables": parameters,  # Passing key-value pairs as variables
+}
+
+# Send the POST request to trigger the job with parameters
+response = requests.post(url, headers=headers, json=data)
+
+# Check the response
+if response.status_code == 201:
+    print("Pipeline triggered successfully with parameters:")
+    print(response.json())
+else:
+    print(f"Failed to trigger pipeline. Status code: {response.status_code}")
+    print("Response:", response.json())
